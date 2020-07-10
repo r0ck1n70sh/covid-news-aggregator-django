@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>News Aggregator App</title>
+    </head>
+
+    <body>
+        {% load bootstrap4 %}
+        {% bootstrap_css %}
+
+        {% if message %}
+            {% if message == 'success' %}
+                <div class='alert alert-success'>
+                    News Successfully updated!
+                </div>
+            {% else %}
+                <div class='alert alert-info'>
+                    News already updated!
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <h1 class='text-center'>Covid-19 News Agregrator - India</h1>
+
+        <nav class='navbar navbar-expand-lg navbar-light bg-light justify-content-between'>
+            <a class='navbar-brand' href='?page=1'>Home</a>
+            <form class='form-inline my-2 my-lg-0'>
+                <label class='mr-sm-2'>Last Update: {{ lastUpdate }}</label>
+                <a href="{% url 'updater' %}" class='btn btn-success pull-right my-2 my-sm-0'>Update</a>
+            </form>
+        </nav>
+
+        <div class='card-deck'>
+            {% for article in article_list %}
+                <div class='card' style='width: 18rem;'>
+                    <img class='card-img-top' src= {{ article.image }} width='286px' height='180px'>
+                    <div class='card-body'>
+                        <h4 class='card-title'>
+                            Title: {{ article.title }}
+                        </h4>
+
+                        <p class='card-text'>
+                            {{ article.description }}
+                        </p>
+
+                       <p class='card-text'>
+                            <small class='text-muted'>
+                                from {{ article.source }} by {{ article.author }}
+                            </small>
+                        </p> 
+
+                        <p class='card-text'>
+                            <small class='text-muted'>
+                               Last updated {{ article.publishedAt }} 
+                            </small>
+                        </p>
+                        <a class='btn btn-primary' href= {{ article.url }} >Read More</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <nav aria-label="New result pages" class='fixed-bottom'>
+
+        {% if article_list.has_other_pages %}
+            <ul class='pagination justify-content-center pagination-lg'>
+                {% if article_list.has_previous %}
+                    <li class='page-item'><a class='page-link' href='?page={{ article_list.previous_page_number }}'>&laquo;</a></li>
+                {% else %}
+                    <li class='page-item'><span class='disabled'>&laquo;</span></li>
+                {% endif %}
+
+                {% for i in article_list.paginator.page_range %}
+                    {% if article_list.number == i %}
+                        <li class='page-item disabled'><span class='active'>{{ i }}<span class='sr-only'>(current)</span></span></li>
+                    {% else %}
+                        <li class='page-item'><a class='page-link' href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if article_list.has_next %}
+                    <li class='page-item'><a class='page-link' href="?page={{ article_list.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                    <li class='page-item disabled'><span class='disabled'>&raquo;</span></li>
+                {% endif %}
+            </ul>
+        {% endif %}
+
+        </nav>
+
+    </body>
+
+</html>
