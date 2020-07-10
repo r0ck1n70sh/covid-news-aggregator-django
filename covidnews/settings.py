@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -122,4 +123,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LAST_UPDATED = '2020-01-01'
+STATIC_ROOT = os.path.join(BASE_DIR, 'assest')
+
+STATICFILES_DIR = [
+    os.path.join(BASE_DIR, 'static')
+]
